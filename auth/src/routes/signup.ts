@@ -41,7 +41,6 @@ router.post(
       } 
     });
 
-    console.log(user)
     // Generate JWT
     const userJwt = jwt.sign(
       {
