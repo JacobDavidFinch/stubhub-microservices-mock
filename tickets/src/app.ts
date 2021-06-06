@@ -1,5 +1,7 @@
 import express from 'express';
 import 'express-async-errors';
+import { graphqlHTTP } from 'express-graphql';
+const { schema } = require('./schema');
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import { errorHandler, NotFoundError, currentUser } from '@sgtickets/common';
@@ -18,6 +20,10 @@ app.use(
   })
 );
 app.use(currentUser);
+
+app.use('/graphql', graphqlHTTP({
+  schema,
+}));
 
 app.use(createTicketRouter);
 app.use(showTicketRouter);
