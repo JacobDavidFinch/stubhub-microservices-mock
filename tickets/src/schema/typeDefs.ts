@@ -10,6 +10,7 @@ export const typeDefs = `
   type Query {
     ticket: Ticket!
   }
+
 `;
 
 

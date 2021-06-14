@@ -6,3 +6,5 @@ export const schema = makeExecutableSchema({
     resolvers, 
     typeDefs,
 });
+
+export {TicketsAPI} from './ticket-api';
