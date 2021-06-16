@@ -13,12 +13,12 @@ export const resolvers = {
       allTickets: async (_, { id }, { dataSources }) => {
         return dataSources.ticketAPI.getTickets();
       },
-      Tickets: async (_, { id }, { dataSources }) => {
-        return dataSources.ticketAPI.getTickets();
-      },
-      allTickets: async (_, { id }, { dataSources }) => {
-        return dataSources.ticketAPI.getTickets();
-      },
+      // ticket: async (_, { id }, { dataSources }) => {
+      //   return dataSources.ticketAPI.getTickets();
+      // },
+      // allTickets: async (_, { id }, { dataSources }) => {
+      //   return dataSources.ticketAPI.getTickets();
+      // },
     }
   };
   

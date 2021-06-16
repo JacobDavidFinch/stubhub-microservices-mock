@@ -44,6 +44,6 @@ export const server = async () => {
   
   app.use(errorHandler);
 
-  return {server, app}
+  return {apolloServer, app}
 }
 

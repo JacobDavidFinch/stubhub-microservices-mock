@@ -1,8 +1,10 @@
 const { RESTDataSource, RequestOptions } = require('apollo-datasource-rest');
 
 export class TicketsAPI extends RESTDataSource {
-willSendRequest(request: RequestOptions) {
-    request.headers.set('Authorization', this.context.token);
+    baseURL = 'https://personalization-api.example.com/';
+
+    willSendRequest(request: RequestOptions) {
+      request.headers.set('Authorization', this.context.token);
     }
 
   constructor() {

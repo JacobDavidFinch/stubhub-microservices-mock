@@ -4,7 +4,7 @@ import { OrderCreatedListener } from './events/listeners/order-created-listener'
 import { OrderCancelledListener } from './events/listeners/order-cancelled-listener';
 
 const start = async () => {
-  const {server, app} = await server();
+  const {apolloServer, app} = await server();
 
   if (!process.env.JWT_KEY) {
     throw new Error('JWT_KEY must be defined');
