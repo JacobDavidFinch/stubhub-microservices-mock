@@ -1,0 +1,17 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("PG_URI")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model Ticket {
+    title   String  @id @default(uuid())
+    price   Int
+    userId  String  @db.VarChar(255)
+    version Int
+    orderId String? @db.VarChar(255)
+    // createdOn DateTime @default(now()) @db.Timestamptz(6)
+}

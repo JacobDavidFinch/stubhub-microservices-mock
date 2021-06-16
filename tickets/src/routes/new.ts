@@ -1,11 +1,12 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
+import { PrismaClient } from '@prisma/client'
 import { requireAuth, validateRequest } from '@sgtickets/common';
-import { Ticket } from '../models/ticket';
 import { TicketCreatedPublisher } from '../events/publishers/ticket-created-publisher';
 import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
+const prisma = new PrismaClient() 
 
 router.post(
   '/api/tickets',
@@ -20,12 +21,12 @@ router.post(
   async (req: Request, res: Response) => {
     const { title, price } = req.body;
 
-    const ticket = Ticket.build({
+    const ticket = prisma.ticket.create({
       title,
       price,
       userId: req.currentUser!.id,
-    });
-    await ticket.save();
+    })
+
     new TicketCreatedPublisher(natsWrapper.client).publish({
       id: ticket.id,
       title: ticket.title,

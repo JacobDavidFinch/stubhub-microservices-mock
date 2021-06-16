@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
+import { PrismaClient } from '@prisma/client'
 import {
   validateRequest,
   NotFoundError,
@@ -24,7 +25,12 @@ router.put(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const ticket = await Ticket.findById(req.params.id);
+    const prisma = new PrismaClient();
+    const ticket = await prisma.ticket.findUnique({
+      where: {
+        id: req.params.id
+      }
+    });
 
     if (!ticket) {
       throw new NotFoundError();
@@ -38,20 +44,26 @@ router.put(
       throw new NotAuthorizedError();
     }
 
-    ticket.set({
-      title: req.body.title,
-      price: req.body.price,
-    });
-    await ticket.save();
+    const updatedTicket = await prisma.ticket.update({
+      where: {
+        id: ticket.id,
+      },
+      data: {
+        title: req.body.title, 
+        price: req.body.price,
+        version: ticket.version + 1
+      },
+    })
+
     new TicketUpdatedPublisher(natsWrapper.client).publish({
-      id: ticket.id,
-      title: ticket.title,
-      price: ticket.price,
-      userId: ticket.userId,
-      version: ticket.version,
+      id: updatedTicket.id,
+      title: updatedTicket.title,
+      price: updatedTicket.price,
+      userId: updatedTicket.userId,
+      version: updatedTicket.version,
     });
 
-    res.send(ticket);
+    res.send(updatedTicket);
   }
 );
 
